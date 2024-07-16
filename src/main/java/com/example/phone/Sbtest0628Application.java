@@ -13,7 +13,7 @@ public class Sbtest0628Application {
         boolean run = true;
 
         try {
-            application.setPhoneBookService(new PhoneBookServiceImpl(args[0], args[1]));
+            application.setPhoneBookService(new PhoneBookServiceImple(args[0], args[1]));
         } catch (Exception e) {
             throw new RuntimeException("Error : " + e.getMessage());
         }
@@ -54,7 +54,7 @@ public class Sbtest0628Application {
                         break;
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                System.out.println("1~9 사이의 숫자를 입력해주세요.");
             }
         }
     }

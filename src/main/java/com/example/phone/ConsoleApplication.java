@@ -66,17 +66,42 @@ public class ConsoleApplication {
         return eGroup;
     }
 
+    public String needInput(Scanner input, String title) {
+        if ("".equals(title)) {
+            return null;
+        }
+        while(true) {
+            if ("이름".equals(title)) {
+                System.out.print("연락처 ");
+            }
+            System.out.print(title + " : ");
+            String str = input.nextLine();
+            if (str.equals("")) {
+                if ("전화번호".equals(title)) {
+                    System.out.println(title + "는 반드시 입력해주세요.");
+                } else {
+                    System.out.println(title + "은 반드시 입력해주세요.");
+                }
+            }
+            else {
+                return str;
+            }
+        }
+    }
+
     public void insert(Scanner input) throws Exception {
         System.out.println("--------");
         System.out.println("연락처 생성");
         System.out.println("--------");
-        System.out.print("연락처 이름 :");
-        String name = input.nextLine();
+        String name, phone, email;
+
+        name = needInput(input, "이름");
+
         EPhoneGroup group = this.getGroupFromScanner(input, "");
-        System.out.print("전화번호 :");
-        String phone = input.nextLine();
-        System.out.print("이메일 :");
-        String email = input.nextLine();
+
+        phone = needInput(input, "전화번호");
+
+        email = needInput(input, "이메일");
 
         if (this.phoneBookService.insert(name, group, phone, email)) {
             this.phoneBookService.saveData();
@@ -90,13 +115,15 @@ public class ConsoleApplication {
             System.out.println("에러: ID 데이터 가 존재하지 않습니다.");
             return;
         }
-        System.out.print("연락처 이름 :");
-        String name = input.nextLine();
+
+        String name = this.needInput(input, "이름");
+
         EPhoneGroup group = this.getGroupFromScanner(input, "");
-        System.out.print("전화번호 :");
-        String phone = input.nextLine();
-        System.out.print("이메일 :");
-        String email = input.nextLine();
+
+        String phone = this.needInput(input, "전화번호");
+
+        String email = this.needInput(input, "이메일");
+
         IPhoneBook update = PhoneBook.builder()
                 .id(result.getId()).name(name)
                 .group(group)

@@ -1,7 +1,6 @@
 package com.example.phone;
 
 import org.json.simple.JSONObject;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

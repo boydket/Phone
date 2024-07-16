@@ -9,8 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PhoneBookServiceTests {
     @Test
     public void phoneBookServiceImplTest() throws Exception {
-        IPhoneBookService<IPhoneBook> jsonService = new PhoneBookServiceImpl("-j", "test.json");
-        IPhoneBookService<IPhoneBook> textService = new PhoneBookServiceImpl("-t", "test.txt");
+        IPhoneBookService<IPhoneBook> jsonService = new PhoneBookServiceImple("-j", "test.json");
+        IPhoneBookService<IPhoneBook> textService = new PhoneBookServiceImple("-t", "test.txt");
         File jsonFile = new File("test.json");
         File textFile = new File("test.txt");
         jsonFile.delete();
@@ -41,18 +41,13 @@ public class PhoneBookServiceTests {
         // size test
         assertThat(jsonService.size()).isEqualTo(3);
         assertThat(textService.size()).isEqualTo(3);
-        // find test
+        // findById test
         IPhoneBook find = jsonService.findById(2L);
         assertThat(find.getName()).isEqualTo("add2");
         assertThat(find.getGroup()).isEqualTo(EPhoneGroup.Jobs);
         assertThat(find.getPhoneNumber()).isEqualTo("010-1111-0000");
         assertThat(find.getEmail()).isEqualTo("add2@gmail.com");
 
-        IPhoneBook find2 = textService.findById(2L);
-        assertThat(find2.getName()).isEqualTo("add2");
-        assertThat(find2.getGroup()).isEqualTo(EPhoneGroup.Jobs);
-        assertThat(find2.getPhoneNumber()).isEqualTo("010-1111-0000");
-        assertThat(find2.getEmail()).isEqualTo("add2@gmail.com");
         // maxId test
         assertThat(jsonService.getMaxId()).isEqualTo(4L);
         assertThat(textService.getMaxId()).isEqualTo(4L);

@@ -4,10 +4,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -32,15 +28,6 @@ public class PhoneBookRepositoryTests {
         assertThat(phoneBook.getPhoneNumber()).isEqualTo("010-1234-5678");
         assertThat(phoneBook.getEmail()).isEqualTo("abc@naver.com");
 
-
-//        JSONObject js = repository.getJsonFromObject(phoneBook);
-//        //System.out.println(js);
-//        assertThat((Long)js.get("id")).isEqualTo(123L);
-//        assertThat((String)js.get("name")).isEqualTo("hong");
-//        assertThat(js.get("group")).isEqualTo(EPhoneGroup.Jobs);
-//        assertThat((String)js.get("phoneNumber")).isEqualTo("010-1234-5678");
-//        assertThat((String)js.get("email")).isEqualTo("abc@naver.com");
-//        assertThat(jobject.toJSONString()).isEqualTo("{\"phoneNumber\":\"1111-2222\",\"name\":\"폰북\",\"id\":88,\"email\":\"abcdefg@daum.net\",\"group\":\"Hobbies\"}");
         IPhoneBook phoneBook2 = new PhoneBook();
         phoneBook2.setId(88L);
         phoneBook2.setName("폰북");
@@ -80,5 +67,14 @@ public class PhoneBookRepositoryTests {
         assertThat(items2[3]).isEqualTo("010-1234-5678");
         assertThat(items2[4]).isEqualTo("abc@naver.com");
         assertThat(str).isEqualTo("123,hong,Jobs,010-1234-5678,abc@naver.com");
+    }
+
+    @Test
+    public void getMaxIdTest() throws Exception {
+        IPhoneBookService<IPhoneBook> ipbs = new PhoneBookServiceImple("-j", "example.json");
+        ipbs.insert("aaa", EPhoneGroup.Friends, "010-1111-1111", "aaa@naver.com");
+        ipbs.insert("bbb", EPhoneGroup.Jobs, "010-2222-2222", "bbb@naver.com");
+        ipbs.insert("ccc", EPhoneGroup.Hobbies, "010-3333-3333", "ccc@naver.com");
+        assertThat(ipbs.getMaxId()).isEqualTo(3L);
     }
 }

@@ -3,11 +3,11 @@ package com.example.phone;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
+public class PhoneBookServiceImple implements IPhoneBookService<IPhoneBook> {
     private List<IPhoneBook> iplist = new ArrayList<>();
     private final IPhoneBookRepository<IPhoneBook> ipbr;
 
-    public PhoneBookServiceImpl(String arg1, String fileName) throws Exception {
+    public PhoneBookServiceImple(String arg1, String fileName) throws Exception {
         if ("-j".equals(arg1)) {
             ipbr = new PhoneBookJsonRepository(fileName);
         } else if ("-t".equals(arg1)) {
@@ -17,15 +17,6 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
         }
     }
 
-//    public void setInitRepository(String arg1, String fileName) throws Exception {
-//        if ("-j".equals(arg1)) {
-//            ipbr = new PhoneBookJsonRepository(fileName);
-//        } else if ("-t".equals(arg1)) {
-//            ipbr = new PhoneBookTextRepository(fileName);
-//        } else {
-//            throw new Exception("Error : You need program arguments (-j/-t) (filename) !");
-//        }
-//    }
 
     @Override
     public int size() {
@@ -35,22 +26,34 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     @Override
     public Long getMaxId() {
         Long max = 0L;
-        for(IPhoneBook pb : this.iplist) {
-            if(pb.getId()>max) {
-                max = pb.getId();
-            }
+        if ( this.size() == 0 ) {
+            return 1L;
         }
-        return ++max;
+        else {
+            return ( this.iplist.get( this.size() - 1 ).getId() )+1;
+        }
     }
 
     @Override
     public IPhoneBook findById(Long id) {
-        for ( IPhoneBook obj : this.iplist ) {
-            if ( id.equals(obj.getId()) ) {
-                return obj;
+        int low = 0;
+        int high = this.size()-1;
+        int mid;
+
+            while (low <= high) {
+                mid = (low + high) / 2;
+                IPhoneBook obj = this.iplist.get(mid);
+
+                if (obj.getId() == id) {
+                    return obj;
+                } else if (obj.getId() < id) {
+                    low = mid + 1;
+                } else {
+                    high = mid -1;
+                }
             }
-        }
-        return null;
+            return null;
+
     }
 
     @Override
@@ -87,6 +90,7 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     @Override
     public boolean update(Long id, IPhoneBook phoneBook) throws Exception {
         int findIndex = this.findIndexById(id);
+        System.out.println("수정할 idx는 " + findIndex);
         if ( findIndex >= 0 ) {
             phoneBook.setId(id);
             this.iplist.set(findIndex, phoneBook);
@@ -95,10 +99,21 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
         return false;
     }
 
-    private int findIndexById(Long id) {
-        for ( int i = 0; i < this.iplist.size(); i++ ) {
-            if ( id.equals(this.iplist.get(i).getId()) ) {
-                return i;
+    public int findIndexById(Long id) {
+        int low = 0;
+        int high = this.size()-1;
+        int mid;
+
+        while (low <= high) {
+            mid = (low + high) / 2;
+            Long indexId = this.iplist.get(mid).getId();
+
+            if (indexId == id) {
+                return mid;
+            } else if (indexId < id) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
         }
         return -1;

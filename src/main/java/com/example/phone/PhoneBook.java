@@ -28,6 +28,7 @@ public class PhoneBook implements IPhoneBook {
     public String getName() {
         return this.name;
     }
+
     public void setName(String name) {
         this.name=name;
     }
@@ -54,7 +55,7 @@ public class PhoneBook implements IPhoneBook {
     }
 
     public String toString() {
-        return String.format("%d\t\t%s\t\t%s\t\t%s\t\t%s",
+        return String.format("ID:\t%d, 이름:%s, 그룹:%s, 번호:%s, 이메일:%s",
                 this.id, this.name, this.group, this.phoneNumber, this.email);
     }
 }
